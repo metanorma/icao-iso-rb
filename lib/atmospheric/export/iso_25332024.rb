@@ -1,12 +1,12 @@
 require_relative "./target"
 require_relative "./hypsometrical_tables"
 require_relative "./iso_25331975"
+require_relative "iso_25332024/hypsometrical_geometric_attrs"
+require_relative "iso_25332024/hypsometrical_geopotential_attrs"
 
 module Atmospheric
   module Export
-
     module Iso25332024
-
       module GroupBaseMeters
         def steps
           (
@@ -68,8 +68,8 @@ module Atmospheric
         # The last `map` should be removed if this bug is fixed
         def steps
           (
-            (5.0..19.99).step(0.01).to_a.map {|v| v.round(2)} +
-            (20.0..1770.9).step(0.1).to_a.map {|v| v.round(1)}
+            (5.0..19.99).step(0.01).to_a.map { |v| v.round(2) } +
+            (20.0..1770.9).step(0.1).to_a.map { |v| v.round(1) }
           )
         end
 
@@ -91,6 +91,10 @@ module Atmospheric
             "geometric-altitude-ft" => gm_h_ft.round,
           }
         end
+
+        def set_attrs
+          super(klass: HypsometricalMbarAttrs)
+        end
       end
 
       class HypsometricalGeometric < HypsometricalTables::TableBase
@@ -102,9 +106,15 @@ module Atmospheric
           hgpm = Isa.geopotential_altitude_from_geometric(hgmm)
           {
             "geometric-altitude-m" => hgpm,
-            "pressure-mbar" => round_to_sig_figs(Isa.pressure_from_geopotential_mbar(hgpm.to_f), 6),
+            "pressure-mbar" => round_to_sig_figs(
+              Isa.pressure_from_geopotential_mbar(hgpm.to_f), 6
+            ),
             # "pressure-mmhg" => round_to_sig_figs(Isa.pressure_from_geopotential_mmhg(hgpm.to_f), 6),
           }
+        end
+
+        def set_attrs
+          super(klass: HypsometricalGeometricAttrs)
         end
       end
 
@@ -116,13 +126,17 @@ module Atmospheric
         def row(hgpm, unit:)
           {
             "geopotential-altitude-m" => hgpm,
-            "pressure-mbar" => round_to_sig_figs(Isa.pressure_from_geopotential_mbar(hgpm.to_f), 6),
+            "pressure-mbar" => round_to_sig_figs(
+              Isa.pressure_from_geopotential_mbar(hgpm.to_f), 6
+            ),
             # "pressure-mmhg" => round_to_sig_figs(Isa.pressure_from_geopotential_mmhg(hgpm.to_f), 6),
           }
         end
+
+        def set_attrs
+          super(klass: HypsometricalGeopotentialAttrs)
+        end
       end
-
-
 
       class << self
         def table_5
@@ -162,44 +176,41 @@ module Atmospheric
         end
 
         def table_5_yaml
-          GroupOneMeters.new.to_yaml
+          GroupOneMeters.new.set_attrs.to_yaml
         end
 
         def table_6_yaml
-          GroupTwoMeters.new.to_yaml
+          GroupTwoMeters.new.set_attrs.to_yaml
         end
 
         def table_7_yaml
-          GroupThreeMeters.new.to_yaml
+          GroupThreeMeters.new.set_attrs.to_yaml
         end
 
         def table_8_yaml
-          GroupOneFeet.new.to_yaml
+          GroupOneFeet.new.set_attrs.to_yaml
         end
 
         def table_9_yaml
-          GroupTwoFeet.new.to_yaml
+          GroupTwoFeet.new.set_attrs.to_yaml
         end
 
         def table_10_yaml
-          GroupThreeFeet.new.to_yaml
+          GroupThreeFeet.new.set_attrs.to_yaml
         end
 
         def table_11_yaml
-          HypsometricalMbar.new.to_yaml
+          HypsometricalMbar.new.set_attrs.to_yaml
         end
 
         def table_12_yaml
-          HypsometricalGeometric.new.to_yaml
+          HypsometricalGeometric.new.set_attrs.to_yaml
         end
 
         def table_13_yaml
-          HypsometricalGeopotential.new.to_yaml
+          HypsometricalGeopotential.new.set_attrs.to_yaml
         end
-
       end
-
     end
-
   end
 end

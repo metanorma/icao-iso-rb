@@ -1,4 +1,6 @@
 require_relative "./group_base"
+require_relative "group_two_attrs"
+require "bigdecimal"
 # rubocop:disable Metrics/AbcSize
 # rubocop:disable Metrics/BlockLength
 # rubocop:disable Metrics/CyclomaticComplexity
@@ -9,8 +11,15 @@ require_relative "./group_base"
 module Atmospheric
   module Export
     module Iso25331975
-
       class GroupTwo < GroupBase
+        attribute :by_geometrical_altitude, GroupTwoAttrs, collection: true
+        attribute :by_geopotential_altitude, GroupTwoAttrs, collection: true
+
+        key_value do
+          map "by-geometrical-altitude", to: :by_geometrical_altitude
+          map "by-geopotential-altitude", to: :by_geopotential_altitude
+        end
+
         # In meters only
         def row_from_geopotential(gp_h_f)
           {
@@ -24,9 +33,11 @@ module Atmospheric
           }
         end
 
+        def set_attrs
+          super(klass: GroupTwoAttrs)
+        end
       end
     end
-
   end
 end
 # rubocop:enable Metrics/AbcSize

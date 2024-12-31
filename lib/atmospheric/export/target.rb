@@ -2,7 +2,6 @@ require "yaml"
 
 module Atmospheric
   module Export
-
     module Target
       def round_to_sig_figs(num, num_sig_figs)
         num.round(num_sig_figs - Math.log10(num).ceil).to_f
@@ -14,13 +13,6 @@ module Atmospheric
 
       def ft_to_m(feet)
         feet * 0.3048
-      end
-
-      def to_yaml
-        to_h
-          .to_yaml(indentation: 4)
-          .gsub("\n-   ", "\n\n  - ")
-          .gsub(/^(.*):\n/, "\n\\1:") # Make fancy
       end
 
       def to_file(hash = to_yaml)

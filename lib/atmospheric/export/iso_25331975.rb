@@ -15,18 +15,17 @@ module Atmospheric
         end
 
         def table_5_yaml
-          GroupOne.new.to_yaml
+          GroupOne.new.set_attrs.to_yaml
         end
 
         def table_6_yaml
-          GroupTwo.new.to_yaml
+          GroupTwo.new.set_attrs.to_yaml
         end
 
         def table_7_yaml
-          GroupThree.new.to_yaml
+          GroupThree.new.set_attrs.to_yaml
         end
       end
-
     end
   end
 end

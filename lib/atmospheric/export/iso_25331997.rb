@@ -3,9 +3,7 @@ require_relative "./iso_25331975"
 
 module Atmospheric
   module Export
-
     module Iso25331997
-
       module GroupBaseMeters
         def steps
           (-5000..2000).step(50)
@@ -76,31 +74,29 @@ module Atmospheric
         end
 
         def table_1_yaml
-          GroupOne.new.to_yaml
+          GroupOne.new.set_attrs.to_yaml
         end
 
         def table_2_yaml
-          GroupTwo.new.to_yaml
+          GroupTwo.new.set_attrs.to_yaml
         end
 
         def table_3_yaml
-          GroupThree.new.to_yaml
+          GroupThree.new.set_attrs.to_yaml
         end
 
         def table_4_yaml
-          GroupFour.new.to_yaml
+          GroupFour.new.set_attrs.to_yaml
         end
 
         def table_5_yaml
-          GroupFive.new.to_yaml
+          GroupFive.new.set_attrs.to_yaml
         end
 
         def table_6_yaml
-          GroupSix.new.to_yaml
+          GroupSix.new.set_attrs.to_yaml
         end
       end
-
     end
-
   end
 end
